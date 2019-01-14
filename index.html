@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pagination.js | Home</title>
+    <link href="http://pagination.js.org/css/base.css" rel="stylesheet">
+    <link href="http://pagination.js.org/css/prettify.css" rel="stylesheet">
+    <link href="http://pagination.js.org/dist/2.1.4/pagination.css" rel="stylesheet">
+    <link href="http://pagination.js.org/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+<div id="data-container"></div>
+<div id="pagination-container"></div>
+
+<div id="gototop">Top</div>
+
+<script type="text/javascript" src="http://pagination.js.org/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="http://pagination.js.org/js/prettify.min.js"></script>
+<script type="text/javascript" src="http://pagination.js.org/dist/2.1.4/pagination.min.js"></script>
+
+<script>
+function template(data) {
+  // console.log(data);
+  // data = [{title: "i Like turtles"}, {title: "I like memes"}];
+  // apply map
+  // data = ['<span>I like turtles</span>', '<span>I Like mmes</span>'].join('');
+  // data = '<span>I like turtles</span> <span>I Like mmes</span>';
+  return data.map(item => `<div><a href="${item.url}">${item.url}</pre></div>`).join('');
+}
+const dataContainer = $('#data-container');
+const query = 'Genentech' + ' AND drug'
+const url = `https://newsapi.org/v2/everything?language=en&apiKey=8454a788c9ee43aaa925a9c288118ed7&q=
+        ${query}&sortBy=popularity`;
+$('#pagination-container').pagination({
+    dataSource: url,
+    locator: 'articles',
+    totalNumber: 120,
+    // alias: {
+    //     pageNumber: 'pageNum',
+    //     pageSize: 'limit'
+    // },
+    ajax: {
+        beforeSend: function() {
+            dataContainer.html('Loading data from flickr.com ...');
+        }
+    },
+    callback: function(data, pagination) {
+        // template method of yourself
+      console.log(data);
+      console.log(pagination);
+        var html = template(data);
+        dataContainer.html(html);
+    }
+})
+</script>
+</body>
+</html>
